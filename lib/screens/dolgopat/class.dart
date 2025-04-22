@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'pagolin.dart';
+import 'dolgopat.dart';
 
 class ClassScreen extends StatelessWidget {
   const ClassScreen({super.key});
@@ -13,11 +13,26 @@ class ClassScreen extends StatelessWidget {
           height: 812,
           child: Stack(
             children: [
-              Container(
-                color: const Color(0xFF1C18F2), // Синий фон
+              // 📷 Фон с градиентом
+              Positioned.fill(
+                child: Image.asset(
+                  'assets/class_bg.png',
+                  fit: BoxFit.cover,
+                ),
               ),
 
-              // Кнопка "назад"
+              // 🔵 Прямоугольник под шапкой
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                height: 176,
+                child: Container(
+                  color: const Color(0xFF1C18F2),
+                ),
+              ),
+
+              // 🔙 Кнопка "назад"
               Positioned(
                 top: 32,
                 left: 21,
@@ -25,7 +40,7 @@ class ClassScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => const PagolinScreen()),
+                      MaterialPageRoute(builder: (context) => const DolgopatScreen()),
                     );
                   },
                   child: Container(
@@ -42,7 +57,7 @@ class ClassScreen extends StatelessWidget {
                 ),
               ),
 
-              // Заголовок
+              // 🏷 Заголовок
               const Positioned(
                 top: 102,
                 left: 17,
@@ -57,7 +72,7 @@ class ClassScreen extends StatelessWidget {
                 ),
               ),
 
-              // Иконка справа
+              // 🌍 Иконка
               Positioned(
                 top: 93,
                 left: 302,
@@ -68,71 +83,49 @@ class ClassScreen extends StatelessWidget {
                     color: Colors.white.withOpacity(0.2),
                     shape: BoxShape.circle,
                   ),
-                  child: Center(
-                    child: Image.asset(
-                      'assets/famicons_earth-sharp.png',
-                      width: 32,
-                      height: 32,
-                      fit: BoxFit.contain,
-                    ),
+                  child: Image.asset(
+                    'assets/famicons_earth-sharp.png',
+                    width: 32,
+                    height: 32,
+                    fit: BoxFit.contain,
                   ),
                 ),
               ),
 
-              // Картинка панголина
+              // 🖼 Картинка
               Positioned(
                 top: 176,
                 left: 0,
                 child: Image.asset(
-                  'assets/photo_2025-04-03_22-40-03 (2).jpg',
+                  'assets/card5_2.png',
                   width: 375,
                   height: 211,
                   fit: BoxFit.cover,
                 ),
               ),
 
-              // Классификация текста
-              Positioned(
-                top: 401,
+              // 📋 Текст классификации
+              const Positioned(
+                top: 397,
                 left: 17,
                 right: 17,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _richLine('Домен', 'Эукариоты'),
-                    _richLine('Царство', 'Животные'),
-                    _richLine('Тип', 'Хордовые'),
-                    _richLine('Класс', 'Млекопитающие'),
-                    _richLine('Отряд', 'Панголины'),
-                    _richLine('Семейство', 'Ящеровые'),
-                    _richLine('Род', 'Центральноафриканские панголины'),
-                  ],
+                child: Text(
+                  'Домен: Эукариоты\n'
+                  'Царство: Животные\n'
+                  'Тип: Хордовые\n'
+                  'Класс: Млекопитающие\n'
+                  'Отряд: Приматы\n'
+                  'Семейство: Долгопятовые\n',
+                  style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontSize: 18,
+                    color: Colors.white,
+                    height: 1.6,
+                  ),
                 ),
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _richLine(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 6),
-      child: RichText(
-        text: TextSpan(
-          style: const TextStyle(
-            fontFamily: 'Montserrat',
-            fontSize: 18,
-            color: Colors.white,
-          ),
-          children: [
-            TextSpan(text: '$label: '),
-            TextSpan(
-              text: value,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ],
         ),
       ),
     );

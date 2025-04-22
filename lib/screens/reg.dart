@@ -1,8 +1,54 @@
 import 'package:flutter/material.dart';
-import 'hi.dart'; // Подключаем экран HiScreen
+import '../db/database_helper.dart';
+import 'hi.dart';
 
-class AuthScreen extends StatelessWidget {
+class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
+
+  @override
+  State<AuthScreen> createState() => _AuthScreenState();
+}
+
+class _AuthScreenState extends State<AuthScreen> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  Future<void> _login() async {
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      _showMessage('Пожалуйста, введите почту и пароль');
+      return;
+    }
+
+    final user = await DatabaseHelper.instance.getUserByEmail(email);
+
+    if (user == null) {
+      _showMessage('Пользователь не найден');
+      return;
+    }
+
+    if (user['password'] != password) {
+      _showMessage('Неверный пароль');
+      return;
+    }
+
+    // Успешный вход
+    final name = user['name'];
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (_) => HiScreen(userName: name),
+      ),
+    );
+  }
+
+  void _showMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +59,7 @@ class AuthScreen extends StatelessWidget {
           height: 812,
           child: Stack(
             children: [
-              // Фон: градиент
+              // Градиентный фон
               Positioned.fill(
                 child: Container(
                   decoration: const BoxDecoration(
@@ -36,9 +82,7 @@ class AuthScreen extends StatelessWidget {
                 top: 40,
                 left: 24,
                 child: GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
+                  onTap: () => Navigator.pop(context),
                   child: Container(
                     width: 105,
                     height: 44,
@@ -57,7 +101,7 @@ class AuthScreen extends StatelessWidget {
                 ),
               ),
 
-              // Поля "Почта" и "Пароль"
+              // Поля ввода
               Positioned(
                 top: 300,
                 left: 32,
@@ -66,8 +110,8 @@ class AuthScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextField(
-                      style: const TextStyle(
-                          color: Colors.white, fontFamily: 'Montserrat'),
+                      controller: emailController,
+                      style: const TextStyle(color: Colors.white, fontFamily: 'Montserrat'),
                       cursorColor: Colors.white,
                       decoration: InputDecoration(
                         labelText: 'Почта',
@@ -84,9 +128,9 @@ class AuthScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 24),
                     TextField(
+                      controller: passwordController,
                       obscureText: true,
-                      style: const TextStyle(
-                          color: Colors.white, fontFamily: 'Montserrat'),
+                      style: const TextStyle(color: Colors.white, fontFamily: 'Montserrat'),
                       cursorColor: Colors.white,
                       decoration: InputDecoration(
                         labelText: 'Пароль',
@@ -105,20 +149,13 @@ class AuthScreen extends StatelessWidget {
                 ),
               ),
 
-              // Кнопка "Войти" с переходом на hi.dart
+              // Кнопка "Войти"
               Positioned(
                 top: 470,
                 left: 32,
                 right: 32,
                 child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const HiScreen(),
-                      ),
-                    );
-                  },
+                  onTap: _login,
                   child: Container(
                     height: 60,
                     decoration: BoxDecoration(
@@ -154,7 +191,7 @@ class AuthScreen extends StatelessWidget {
                 child: Center(
                   child: TextButton(
                     onPressed: () {
-                      // TODO: логика восстановления пароля
+                      // TODO: восстановление пароля
                     },
                     child: const Text(
                       'Забыли пароль?',

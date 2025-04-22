@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'hi.dart';
-import 'place.dart';
-import 'food.dart';
-import 'class.dart';
-import 'facts.dart';
+import '../hi.dart';
+import '../darvin/place.dart';
+import '../darvin/food.dart';
+import '../darvin/class.dart';
+import '../darvin/facts.dart';
 
-class PagolinScreen extends StatelessWidget {
-  const PagolinScreen({super.key});
+class DarvinScreen extends StatelessWidget {
+  const DarvinScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class PagolinScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     image: const DecorationImage(
-                      image: AssetImage('assets/photo_2025-04-03_22-40-03 (2).jpg'),
+                      image: AssetImage('assets/card2_1.png'),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -44,13 +44,14 @@ class PagolinScreen extends StatelessWidget {
 
               // ← Кнопка назад
               Positioned(
-                top: 139,
-                left: 9,
+                 top: 32,
+                left: 21,
                 child: GestureDetector(
                   onTap: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => const HiScreen()),
+                      MaterialPageRoute(builder: (context) => const HiScreen(userName: '...')
+),
                     );
                   },
                   child: Container(
@@ -72,7 +73,7 @@ class PagolinScreen extends StatelessWidget {
                 top: 330,
                 left: 19,
                 child: Text(
-                  'Панголин',
+                  'Неотопырь Дарвина',
                   style: TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 30,
@@ -88,8 +89,8 @@ class PagolinScreen extends StatelessWidget {
                 left: 16,
                 right: 16,
                 child: Text(
-                  'Панголины – яркий пример конвергентной эволюции, когда неродственные виды животных, эволюционируя в сходных условиях среды, занимая сходные экологические ниши, часто приобретают совершенно поразительное сходство. В Африке и Южной Америке обитает множество муравьев и термитов. Ниша муравьедов на разных континентах была заполнена разными неродственными видами млекопитающих.',
-                  style: TextStyle(
+                  'Это необычное создание всем своим видом будто демонстрирует недовольство и высокомерие. Только взгляните на эти ярко-красные губы с опущенными вниз уголками.',
+                    style: TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 16,
                     color: Colors.white,
@@ -108,7 +109,7 @@ class PagolinScreen extends StatelessWidget {
                     const SizedBox(width: 14),
                     _iconButtonWithLabel(context, 'assets/food.png', 'Еда', Color(0xFF78A119), const FoodScreen()),
                     const SizedBox(width: 14),
-                    _iconButtonWithLabel(context, 'assets/famicons_earth-sharp.png', 'Клас', Color(0xFF1C18F2), const ClassScreen()),
+                    _iconButtonWithLabel(context, 'assets/famicons_earth-sharp.png', 'Клас', Color(0xFF1C18F2), const dClassScreen()),
                     const SizedBox(width: 14),
                     _iconButtonWithLabel(context, 'assets/ic_outline-lightbulb.png', 'Факты', Color(0xFF034100), const FactsScreen()),
                   ],

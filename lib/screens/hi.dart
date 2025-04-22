@@ -1,20 +1,92 @@
 import 'package:flutter/material.dart';
-import 'profile.dart'; // Импортируем экран профиля
-import 'pagolin.dart';
+import 'pagolin/pagolin.dart';
+import 'profile.dart';
+import 'genetta/genetta.dart';
+import 'darvin/darvin.dart';
+import 'Akse/akse.dart';
+import 'dolgopat/dolgopat.dart';
+import 'package:app/db/database_helper.dart'; // подключение базы данных
 
-class HiScreen extends StatelessWidget {
-  const HiScreen({super.key});
+class HiScreen extends StatefulWidget {
+  final String userName;
+
+  const HiScreen({super.key, required this.userName});
+
+  @override
+  State<HiScreen> createState() => _HiScreenState();
+}
+
+class _HiScreenState extends State<HiScreen> {
+  String searchText = '';
+  String email = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserEmail();
+  }
+
+  Future<void> _loadUserEmail() async {
+    final user = await DatabaseHelper.instance.getLastUser();
+    if (user != null && mounted) {
+      setState(() {
+        email = user['email'] ?? '';
+      });
+    }
+  }
+
+  final List<Map<String, dynamic>> allCards = [
+    {
+      'title': 'Морской чёрт',
+      'subtitle': 'Неотопырь Дарвина',
+      'image': 'assets/photo_2025-04-03_22-40-02.jpg',
+      'onTap': (BuildContext context) =>
+          Navigator.push(context, MaterialPageRoute(builder: (_) => const DarvinScreen())),
+    },
+    {
+      'title': 'Броненосец и муравьед',
+      'subtitle': 'Панголин',
+      'image': 'assets/photo_2025-04-03_22-40-03 (2).jpg',
+      'onTap': (BuildContext context) =>
+          Navigator.push(context, MaterialPageRoute(builder: (_) => const PagolinScreen())),
+    },
+    {
+      'title': 'Земноводное',
+      'subtitle': 'Аксолотль',
+      'image': 'assets/card3_1.png',
+      'onTap': (BuildContext context) =>
+          Navigator.push(context, MaterialPageRoute(builder: (_) => const AkseScreen())),
+    },
+    {
+      'title': 'Не кошка',
+      'subtitle': 'Генетта',
+      'image': 'assets/card4_1.png',
+      'onTap': (BuildContext context) =>
+          Navigator.push(context, MaterialPageRoute(builder: (_) => const GenettaScreen())),
+    },
+    {
+      'title': 'Лемур и обезьяна',
+      'subtitle': 'Долгопят',
+      'image': 'assets/card5_1.png',
+      'onTap': (BuildContext context) =>
+          Navigator.push(context, MaterialPageRoute(builder: (_) => const DolgopatScreen())),
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
+    final filteredCards = allCards
+        .where((card) =>
+            card['subtitle'].toLowerCase().contains(searchText.toLowerCase()))
+        .toList();
+
     return Scaffold(
       body: Center(
         child: SizedBox(
           width: 375,
-          height: 812,
           child: Stack(
             children: [
-              // 🌳 Фон
+              // Фон
               Positioned.fill(
                 child: Image.asset(
                   'assets/phon.png',
@@ -22,143 +94,143 @@ class HiScreen extends StatelessWidget {
                 ),
               ),
 
-              // 👋 Приветствие + аватарка
-              Positioned(
-                top: 64,
-                left: 24,
-                right: 24,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        'Добро пожаловать, Дмитрий',
-                        style: const TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+              // Контент
+              Positioned.fill(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 64),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Приветствие + аватар
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 21),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'Добро пожаловать, ${widget.userName}',
+                                style: const TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => ProfileScreen(
+                                      userName: widget.userName,
+                                      userEmail: email,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: ClipOval(
+                                child: Image.asset(
+                                  'assets/ava.png',
+                                  width: 48,
+                                  height: 48,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        softWrap: true,
-                        maxLines: 2,
                       ),
-                    ),
-                    const SizedBox(width: 12),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ProfileScreen(),
+
+                      const SizedBox(height: 40),
+
+                      // Поиск
+                      Container(
+                        width: 370,
+                        height: 59,
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        margin: const EdgeInsets.symmetric(horizontal: 3),
+                        decoration: BoxDecoration(
+                          color: const Color(0x4D000000),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        alignment: Alignment.centerLeft,
+                        child: TextField(
+                          onChanged: (value) {
+                            setState(() {
+                              searchText = value;
+                            });
+                          },
+                          style: const TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFFFFD000),
                           ),
-                        );
-                      },
-                      child: ClipOval(
-                        child: Image.asset(
-                          'assets/ava.png',
-                          width: 48,
-                          height: 48,
-                          fit: BoxFit.cover,
+                          cursorColor: Color(0xFFFFD000),
+                          decoration: const InputDecoration(
+                            hintText: 'Найди интересное животное...',
+                            hintStyle: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFFFFD000),
+                            ),
+                            border: InputBorder.none,
+                            isCollapsed: true,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
 
-              // 🔍 Поисковая строка
-              Positioned(
-                top: 136,
-                left: 3,
-                child: Container(
-                  width: 370,
-                  height: 59,
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  decoration: BoxDecoration(
-                    color: const Color(0x4D000000),
-                    borderRadius: BorderRadius.circular(12),
+                      const SizedBox(height: 40),
+
+                      // Заголовки
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 3),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Следует посмотреть!',
+                              style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              'Давайте исследовать',
+                              style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFFFFCD29),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const SizedBox(height: 40),
+
+                      // Карточки
+                      for (var card in filteredCards) ...[
+                        buildAnimalCard(
+                          title: card['title'],
+                          subtitle: card['subtitle'],
+                          imagePath: card['image'],
+                          onArrowTap: card['onTap'] != null
+                              ? () => card['onTap'](context)
+                              : null,
+                        ),
+                        const SizedBox(height: 18),
+                      ],
+
+                      const SizedBox(height: 60),
+                    ],
                   ),
-                  alignment: Alignment.centerLeft,
-                  child: TextField(
-                    style: const TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xFFFFD000),
-                    ),
-                    cursorColor: Color(0xFFFFD000),
-                    decoration: const InputDecoration(
-                      hintText: 'Найди интересное животное...',
-                      hintStyle: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xFFFFD000),
-                      ),
-                      border: InputBorder.none,
-                      isCollapsed: true,
-                    ),
-                  ),
-                ),
-              ),
-
-              // 📢 Заголовки
-              const Positioned(
-                top: 252,
-                left: 2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Следует посмотреть!',
-                      style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
-                      ),
-                    ),
-                    SizedBox(height: 4),
-                    Text(
-                      'Давайте исследовать',
-                      style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFFFFCD29),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // 🐠 Первая карточка
-              Positioned(
-                top: 345,
-                left: 3,
-                child: buildAnimalCard(
-                  title: 'Морской чёрт',
-                  subtitle: 'Неотопырь Дарвина',
-                  imagePath: 'assets/photo_2025-04-03_22-40-02.jpg',
-                ),
-              ),
-
-              // 🐺 Вторая карточка с новой картинкой
-              Positioned(
-                top: 563,
-                left: 3,
-                child: buildAnimalCard(
-                  title: 'Броненосец и муравьед',
-                  subtitle: 'Панголин',
-                  imagePath: 'assets/photo_2025-04-03_22-40-03 (2).jpg',
-                  onArrowTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const PagolinScreen(),
-                      ),
-                    );
-                  },
                 ),
               ),
             ],
@@ -168,7 +240,6 @@ class HiScreen extends StatelessWidget {
     );
   }
 
-  // 🔀 Карточка
   Widget buildAnimalCard({
     required String title,
     required String subtitle,
@@ -231,28 +302,29 @@ class HiScreen extends StatelessWidget {
             ],
           ),
         ),
-        Positioned(
-          top: 114,
-          left: 288,
-          child: GestureDetector(
-            onTap: onArrowTap,
-            child: Container(
-              width: 59,
-              height: 54,
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const Center(
-                child: Icon(
-                  Icons.arrow_forward_ios,
-                  color: Colors.white,
-                  size: 20,
+        if (onArrowTap != null)
+          Positioned(
+            top: 114,
+            left: 288,
+            child: GestureDetector(
+              onTap: onArrowTap,
+              child: Container(
+                width: 59,
+                height: 54,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Center(
+                  child: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Colors.white,
+                    size: 20,
+                  ),
                 ),
               ),
             ),
           ),
-        ),
       ],
     );
   }

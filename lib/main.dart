@@ -1,9 +1,32 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'screens/reg.dart'; // ← твой экран авторизации (AuthScreen)
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'screens/registration.dart';
+import 'package:app/db/database_helper.dart'; // или твой путь
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // ⚠️ ВАЖНО: сначала инициализация FFI
+  if (!kIsWeb &&
+      (defaultTargetPlatform == TargetPlatform.windows ||
+       defaultTargetPlatform == TargetPlatform.linux)) {
+    sqfliteFfiInit();
+    databaseFactory = databaseFactoryFfi;
+  }
+
+  // ✅ Проверка подключения к базе (работает только после FFI)
+  try {
+    final db = await DatabaseHelper.instance.database;
+    print('✅ База успешно открыта: ${db.path}');
+  } catch (e) {
+    print('❌ Ошибка базы данных: $e');
+  }
+
   runApp(const MyApp());
 }
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -124,7 +147,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
 
-              // Кнопка "Исследовать" с анимационным переходом
+              // Кнопка "Исследовать" с анимацией
               Positioned(
                 top: 712,
                 left: 32,
@@ -167,10 +190,11 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-// Анимация перехода (слайд справа налево)
+// Анимация перехода на экран регистрации
 Route _createRouteToAuth() {
   return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) => const AuthScreen(),
+    pageBuilder: (context, animation, secondaryAnimation) =>
+        const RegistrationScreen(),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(1.0, 0.0);
       const end = Offset.zero;

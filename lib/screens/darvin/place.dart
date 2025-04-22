@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'pagolin.dart';
+import 'darvin.dart';
 
 class PlaceScreen extends StatelessWidget {
   const PlaceScreen({super.key});
@@ -13,10 +13,26 @@ class PlaceScreen extends StatelessWidget {
           height: 812,
           child: Stack(
             children: [
-              Container(
-                color: const Color(0xFFFFCD29), // Жёлтый фон
+              // 🌄 Фон
+              Positioned.fill(
+                child: Image.asset(
+                  'assets/place_bg.png',
+                  fit: BoxFit.cover,
+                ),
               ),
-              // Кнопка "назад"
+
+              // 🟨 Заливка сверху
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                height: 176,
+                child: Container(
+                  color: const Color(0xFFFFCD29),
+                ),
+              ),
+
+              // 🔙 Назад
               Positioned(
                 top: 32,
                 left: 21,
@@ -24,7 +40,7 @@ class PlaceScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => const PagolinScreen()),
+                      MaterialPageRoute(builder: (context) => const DarvinScreen()),
                     );
                   },
                   child: Container(
@@ -40,7 +56,8 @@ class PlaceScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              // Заголовок
+
+              // 🏷 Заголовок
               const Positioned(
                 top: 102,
                 left: 17,
@@ -54,7 +71,8 @@ class PlaceScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              // Иконка
+
+              // 🌳 Иконка
               Positioned(
                 top: 93,
                 left: 302,
@@ -73,30 +91,32 @@ class PlaceScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              // Картинка с картой
+
+              // 🗺 Картинка
               Positioned(
-                top: 167,
+                top: 176,
                 left: 0,
                 child: Image.asset(
-                  'assets/map.PNG', // Путь к изображению
-                  width: 374,
+                  'assets/card2_3.png',
+                  width: 375,
                   height: 284,
                   fit: BoxFit.cover,
                 ),
               ),
-              // Текст обитания с переносом
+
+              // 📄 Текст
               const Positioned(
                 top: 479,
                 left: 17,
                 right: 17,
                 child: Text(
-                  'Обитают в Африке к югу от Сахары и в тропических лесах Азии.',
+                  'Нетопырь Дарвина – эндемик фауны Галапагосских островов. Эта странная рыба плохо плавает, но ее плавники позволяют ей прекрасно "ходить" по мягкому дну среди коралловых рифов, где она и обитает. Также нетопырь может скрываться под камнями на глубине от 3 до 76 м.',
                   style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontSize: 18,
                     color: Colors.white,
+                    height: 1.6,
                   ),
-                  softWrap: true,  
                 ),
               ),
             ],

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'pagolin.dart';
+import 'darvin.dart';
 
-class FoodScreen extends StatelessWidget {
-  const FoodScreen({super.key});
+class dClassScreen extends StatelessWidget {
+  const dClassScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,11 +13,26 @@ class FoodScreen extends StatelessWidget {
           height: 812,
           child: Stack(
             children: [
-              Container(
-                color: const Color(0xFF78A119), // Зелёный фон
+              // 📷 Фон с градиентом
+              Positioned.fill(
+                child: Image.asset(
+                  'assets/class_bg.png', // общий фон
+                  fit: BoxFit.cover,
+                ),
               ),
 
-              // Кнопка "назад"
+              // 🔵 Прямоугольник под шапкой
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                height: 176, // до начала картинки
+                child: Container(
+                  color: const Color(0xFF1C18F2), // основной синий цвет
+                ),
+              ),
+
+              // 🔙 Кнопка "назад"
               Positioned(
                 top: 32,
                 left: 21,
@@ -25,7 +40,7 @@ class FoodScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => const PagolinScreen()),
+                      MaterialPageRoute(builder: (context) => const DarvinScreen()),
                     );
                   },
                   child: Container(
@@ -36,21 +51,18 @@ class FoodScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: const Center(
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.white,
-                      ),
+                      child: Icon(Icons.arrow_back_ios, color: Colors.white),
                     ),
                   ),
                 ),
               ),
 
-              // Заголовок
+              // 🏷 Заголовок
               const Positioned(
                 top: 102,
                 left: 17,
                 child: Text(
-                  'Питание',
+                  'Классификация',
                   style: TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 28,
@@ -60,7 +72,7 @@ class FoodScreen extends StatelessWidget {
                 ),
               ),
 
-              // Иконка справа
+              // 🌍 Иконка
               Positioned(
                 top: 93,
                 left: 302,
@@ -71,43 +83,45 @@ class FoodScreen extends StatelessWidget {
                     color: Colors.white.withOpacity(0.2),
                     shape: BoxShape.circle,
                   ),
-                  child: Center(
-                    child: Image.asset(
-                      'assets/food.png',
-                      width: 32,
-                      height: 32,
-                      fit: BoxFit.contain,
-                    ),
+                  child: Image.asset(
+                    'assets/famicons_earth-sharp.png',
+                    width: 32,
+                    height: 32,
+                    fit: BoxFit.contain,
                   ),
                 ),
               ),
 
-              // Картинка панголина
+              // 🖼 Картинка
               Positioned(
                 top: 176,
                 left: 0,
                 child: Image.asset(
-                  'assets/photo_2025-04-03_22-40-03 (2).jpg',
+                  'assets/card2_2.png',
                   width: 375,
                   height: 211,
                   fit: BoxFit.cover,
                 ),
               ),
 
-              // Текст питания
+              // 📋 Текст классификации
               const Positioned(
-                top: 406,
+                top: 397,
                 left: 17,
                 right: 17,
                 child: Text(
-                  'Панголины активны ночью, в поисках пищи полагаясь на хорошее обояние. Когда они находят муравейник, то раскапывают его сильными когтями и слизывают муравьёв и их личинок, потому что защищены от укусов своей броней.',
+                  'Домен: Эукариоты\n'
+                  'Царство: Животные\n'
+                  'Тип: Хордовые\n'
+                  'Класс: Лучепёрые рыбы\n'
+                  'Отряд: Удильщикообразные\n'
+                  'Семейство: Нетопырёвые\n',
                   style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontSize: 18,
                     color: Colors.white,
-                    height: 1.5,
+                    height: 1.6,
                   ),
-                  textAlign: TextAlign.left,
                 ),
               ),
             ],
