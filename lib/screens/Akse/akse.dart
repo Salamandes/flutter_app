@@ -44,8 +44,8 @@ class AkseScreen extends StatelessWidget {
 
               // ← Кнопка назад
               Positioned(
-                top: 139,
-                left: 9,
+               top: 32,
+                left: 21,
                 child: GestureDetector(
                   onTap: () {
                     Navigator.pushReplacement(

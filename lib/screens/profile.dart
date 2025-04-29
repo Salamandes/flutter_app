@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:app/db/database_helper.dart'; // Подключаем DatabaseHelper
 import 'settings.dart'; // Подключаем экран настроек
+import 'help.dart';
+import 'reg.dart';
 
 class ProfileScreen extends StatelessWidget {
   final String userName;
@@ -167,8 +169,17 @@ class ProfileScreen extends StatelessWidget {
                 left: 17,
                 child: GestureDetector(
                   onTap: () {
-                    // Логика перехода к помощи (можно интегрировать сюда HelpScreen)
-                  },
+                    Navigator.push(
+  context,
+  MaterialPageRoute(
+    builder: (_) =>  HelpScreen(
+      userName: userName,
+      userEmail: userEmail,
+    ),
+  ),
+);
+
+                    },
                   child: Container(
                     width: 340,
                     height: 89,
@@ -204,7 +215,9 @@ class ProfileScreen extends StatelessWidget {
                 left: 85,
                 child: GestureDetector(
                   onTap: () {
-                    // Логика выхода
+                  Navigator.push(context,
+                  MaterialPageRoute(builder: (_) =>  AuthScreen(),),
+);
                   },
                   child: Container(
                     width: 204,

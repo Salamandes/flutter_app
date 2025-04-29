@@ -126,7 +126,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     // Карточка с переключателем для уведомлений
                     GestureDetector(
                       onTap: () {
-                        _saveNotificationSettings(!_notificationsEnabled); // Переключаем состояние
+                        _saveNotificationSettings(!_notificationsEnabled);
                       },
                       child: Container(
                         height: 80,
@@ -235,7 +235,7 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
     } else {
       await DatabaseHelper.instance.updatePassword(widget.userEmail, newPass);
       _showMessage('Пароль обновлён');
-      Navigator.pop(context); // Закрытие диалога
+      Navigator.pop(context); 
     }
 
     setState(() => _loading = false);

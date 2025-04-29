@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../db/database_helper.dart';
 import 'hi.dart';
+import 'reg.dart'; // <-- Добавьте импорт для экрана логина
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -28,7 +29,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       await DatabaseHelper.instance.registerUser(name, email, password);
       _showMessage('Регистрация успешна!');
 
-      // Переход на hi.dart
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -55,7 +55,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           height: 812,
           child: Stack(
             children: [
-              // Фон
               Positioned.fill(
                 child: Image.asset(
                   'assets/phon.png',
@@ -91,7 +90,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 ),
               ),
 
-              // Поля
               Positioned(
                 top: 300,
                 left: 20,
@@ -126,7 +124,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
               // Кнопка "Зарегистрироваться"
               Positioned(
-                bottom: 60,
+                bottom: 80,
                 left: 40,
                 right: 40,
                 child: GestureDetector(
@@ -147,6 +145,34 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         fontWeight: FontWeight.w900,
                         fontSize: 20,
                         color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
+              // Кнопка "Уже есть аккаунт?"
+              Positioned(
+                bottom: 20,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const AuthScreen(),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      'Уже есть аккаунт?',
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        color: Colors.white,
+                        fontSize: 16,
+                        decoration: TextDecoration.underline,
                       ),
                     ),
                   ),
